@@ -1,90 +1,181 @@
-:root{
-  --blue:#00bfff;      /* 네온 사이언 */
-  --ring-glow:#00d9ff; /* 스킬 링 글로우 */
+:root {
+  --blue: #00bfff;
+  --ring-glow: #00d9ff;
 }
 
 /* ─── 기본 UI ─── */
-body{margin:0}
-.nav-link{transition:.3s}
-.nav-link:hover{color:var(--blue)}
-header{padding-top:5rem}           /* 고정 네비 높이만큼 여백 */
+body { margin: 0; }
+.nav-link { transition: .3s; }
+.nav-link:hover { color: var(--blue); }
+header { padding-top: 5rem; /* 고정 네비 높이만큼 여백 */ }
 
-/* 스캔라인 */
-#scan{
-  background-image:linear-gradient(transparent 92%,rgba(255,255,255,.06) 96%);
-  background-size:100% 5px;
-  animation:scan 6s linear infinite;
+/* ─── 스캔라인 ─── */
+#scan {
+  background-image: linear-gradient(transparent 92%, rgba(255,255,255,.06) 96%);
+  background-size: 100% 5px;
+  animation: scan 6s linear infinite;
 }
-@keyframes scan{to{background-position-y:5px}}
+@keyframes scan { to { background-position-y: 5px; } }
 
-/* ─── (새) 우주선 커서 ─── */
-html,body{cursor:none}            /* 기본 커서 숨김 */
-#cursor{
-  position:fixed;width:50px;height:50px;pointer-events:none;z-index:1000;
-  transform:translate(-9999px,-9999px);transition:transform .08s linear;
-  border:none !important;background:none !important;   /* 파란 원 강제 OFF */
+/* ─── 우주선 + 네온 부스터 커서 ─── */
+html, body { cursor: none; }
+#cursor {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  pointer-events: none;
+  z-index: 1000;
+  transform: translate(-9999px, -9999px);
 }
-#cursor .ship{width:100%;height:100%}
-#cursor .flame{
-  position:absolute;left:50%;top:70%;width:14px;height:20px;
-  transform:translateX(-50%);opacity:.8;
-  animation:flame .25s infinite alternate;
+#cursor .ship {
+  width: 100%;
+  height: 100%;
+  filter: brightness(4) drop-shadow(0 0 6px var(--blue));
 }
-@keyframes flame{
-  from{opacity:.8;transform:translateX(-50%) scaleY(.8)}
-  to  {opacity:.3;transform:translateX(-50%) scaleY(1.3)}
+#cursor .flame {
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  width: 14px;
+  height: 20px;
+  transform-origin: 50% 0;
+  transform: translateX(-50%);
+  opacity: .8;
+  background: radial-gradient(circle at 50% 100%,
+    rgba(255,255,255,.9) 0 15%,
+    rgba(0,223,255,.8) 30%,
+    rgba(0,191,255,.4) 55%,
+    rgba(0,191,255,0) 80%
+  );
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+  filter: brightness(1.8) blur(1px) drop-shadow(0 0 8px var(--blue));
+  animation: core-flicker 0.15s infinite alternate, glow-flicker 0.3s infinite alternate;
+}
+/* 불꽃 내부 떨림 */
+@keyframes core-flicker {
+  0%   { width: 6px;  height: 18px; opacity: 0.7; }
+  50%  { width: 8px;  height: 22px; opacity: 1;   }
+  100% { width: 7px;  height: 20px; opacity: 0.8; }
+}
+/* 불꽃 외곽 글로우 떨림 */
+@keyframes glow-flicker {
+  0%   { filter: blur(1px)  drop-shadow(0 0 6px var(--blue)); }
+  50%  { filter: blur(2px)  drop-shadow(0 0 8px var(--blue)); }
+  100% { filter: blur(1.5px) drop-shadow(0 0 7px var(--blue)); }
 }
 
-/* 히어로 타이틀 글로우 */
-.drop-shadow-hud{text-shadow:0 0 12px var(--blue)}
+/* ─── 히어로 글로우 ─── */
+.drop-shadow-hud { text-shadow: 0 0 12px var(--blue); }
+
+/* ─── About Me 태그 & 버튼 ─── */
+.tag {
+  background: rgba(255,255,255,.1);
+  padding: .35rem .9rem;
+  border-radius: .7rem;
+}
+.btn {
+  display: inline-block;
+  background: var(--blue);
+  padding: .75rem 1.5rem;
+  border-radius: .75rem;
+  margin-top: 1rem;
+}
 
 /* ─── Skill 링 ─── */
-.skill{display:flex;flex-direction:column;align-items:center;gap:.5rem}
-.skill svg{width:140px;height:140px}
-.skill svg .ring{stroke:var(--ring-glow);filter:url(#glow)}
+.skill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+}
+.skill svg { width: 140px; height: 140px; }
+.skill svg .ring { stroke: var(--ring-glow); filter: url(#glow); }
 
 /* ─── Project 카드 ─── */
-.proj-card{perspective:1200px;width:100%;aspect-ratio:4/3;cursor:pointer}
-.card-inner{
-  position:relative;width:100%;height:100%;border-radius:1rem;overflow:hidden;
-  background:rgba(255,255,255,.06);transition:transform .8s;transform-style:preserve-3d;
+.proj-card {
+  perspective: 1200px;
+  width: 100%;
+  aspect-ratio: 4/3;
+  cursor: pointer;
 }
-.proj-card:hover .card-inner{transform:rotateY(180deg)}
-.face{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  backface-visibility:hidden;font-size:1.05rem;color:#cbd5e1
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: rgba(255,255,255,.06);
+  transition: transform .8s;
+  transform-style: preserve-3d;
 }
-.face.front img{width:100%;height:100%;object-fit:cover}
-.face.front figcaption{
-  position:absolute;bottom:.5rem;left:0;right:0;text-align:center;
-  background:rgba(0,0,0,.65)
+.proj-card:hover .card-inner { transform: rotateY(180deg); }
+.face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  font-size: 1.05rem;
+  color: #cbd5e1;
 }
-.face.back{transform:rotateY(180deg)}
+.face.front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.face.front figcaption {
+  position: absolute;
+  bottom: .5rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: rgba(0,0,0,.65);
+}
+.face.back { transform: rotateY(180deg); }
 
 /* ─── Lightbox ─── */
-#lightbox{
-  position:fixed;inset:0;background:rgba(0,0,0,.9);
-  display:none;align-items:center;justify-content:center;z-index:1100;
+#lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
 }
-#lightbox.open{display:flex}
-#lightbox img{max-width:90%;max-height:90%;border-radius:.75rem}
-#lbClose{
-  position:absolute;top:1rem;right:1.5rem;font-size:2rem;font-weight:700;cursor:pointer;
+#lightbox.open { display: flex; }
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: .75rem;
+}
+#lbClose {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 /* ─── Roadmap 카드 ─── */
-.road{
-  min-width:220px;padding:2rem 1.5rem;border-radius:1rem;font-weight:600;text-align:center;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(0,191,255,.3);
-  backdrop-filter:blur(4px);
+.road {
+  min-width: 220px;
+  padding: 2rem 1.5rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  text-align: center;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(0,191,255,.3);
+  backdrop-filter: blur(4px);
 }
 
-/* 폼 입력 */
-.input{
-  background:rgba(255,255,255,.1);padding:.75rem 1rem;border:none;
-  border-radius:.75rem;color:#fff;
+/* ─── Form 입력 ─── */
+.input {
+  background: rgba(255,255,255,.1);
+  padding: .75rem 1rem;
+  border: none;
+  border-radius: .75rem;
+  color: #fff;
 }
-
-/* 스캔라인 애니 */
-@keyframes scan{to{background-position-y:5px}}

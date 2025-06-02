@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Portfolio</title>
 
-  <!-- Tailwind -->
+  <!-- Tailwind CDN (간단한 유틸 용도) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode:'class',
-      theme:{extend:{
-        colors:{blue:'#00bfff',violet:'#7c4dff'},
-        dropShadow:{hud:'0 0 10px #00bfff'}
-      }}
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { blue: '#00bfff' },
+          dropShadow: { hud: '0 0 10px #00bfff' }
+        }
+      }
     };
   </script>
 
@@ -23,36 +25,42 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollToPlugin.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/TextPlugin.min.js"></script>
 
-  <!-- EmailJS (키 교체) -->
+  <!-- EmailJS (클라이언트 전용) -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="bg-black text-white font-sans overflow-x-hidden">
 
-  <!-- 고정 네비 (항시 상단) -->
+  <!-- Boot Sequence -->
+  <div id="boot" class="fixed inset-0 bg-black flex items-center justify-center z-[9999]">
+    <p id="bootTxt" class="text-green-400 text-xl font-mono"></p>
+  </div>
+
+  <!-- 상단 고정 네비 -->
   <nav class="fixed top-0 left-0 w-full backdrop-blur bg-white/5 border-b border-white/10 z-40">
     <ul class="flex justify-center gap-8 py-3 text-sm select-none">
       <li><a class="nav-link" href="#">Home</a></li>
       <li><a class="nav-link" href="#skills">Skill</a></li>
       <li><a class="nav-link" href="#projects">Project</a></li>
       <li><a class="nav-link" href="#roadmap">Roadmap</a></li>
+      <li><a class="nav-link" href="#about">About</a></li>
       <li><a class="nav-link" href="#contact">Contact</a></li>
     </ul>
   </nav>
 
-  <!-- 우주 배경 + 스캔라인 -->
-  <canvas id="bg" class="fixed inset-0 -z-10"></canvas>
-  <div id="scan" class="fixed inset-0 -z-5 pointer-events-none"></div>
+  <!-- 배경 & 스캔라인 -->
+  <canvas id="bg"   class="fixed inset-0 -z-10"></canvas>
+  <div    id="scan" class="fixed inset-0 -z-5 pointer-events-none"></div>
 
-  <!-- 우주선 커서 -->
+  <!-- 우주선 커서 + 파란 네온 부스터 -->
   <div id="cursor">
-    <img src="img/ship.svg" class="ship">
-    <img src="img/flame.svg" class="flame">
+    <img src="img/ship.svg" class="ship" alt="">
+    <div class="flame"></div>
   </div>
 
   <!-- HERO -->
-  <header class="flex flex-col items-center justify-center text-center h-[65vh] pt-24 fade">
+  <header class="flex flex-col items-center justify-center text-center h-[65vh] fade">
     <h1 class="text-6xl md:text-8xl font-extrabold uppercase tracking-widest drop-shadow-hud text-blue">
       Portfolio
     </h1>
@@ -72,32 +80,67 @@
   <!-- PROJECTS -->
   <section id="projects" class="px-6 py-24 fade">
     <div class="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-      <!-- 카드 구조 그대로 → CSS 플립 유지 -->
-      <div class="proj-card"><div class="card-inner">
-        <figure class="face front"><img src="img/pickforme.png"><figcaption>Pick for me</figcaption></figure>
-        <figure class="face back"><p>Buttons · Expo · GPT</p></figure>
-      </div></div>
-      <div class="proj-card"><div class="card-inner">
-        <figure class="face front"><img src="https://placehold.co/400x250?text=BeatFrame"><figcaption>BeatFrame</figcaption></figure>
-        <figure class="face back"><p>Unity · Rhythm · Sprint</p></figure>
-      </div></div>
-      <div class="proj-card"><div class="card-inner">
-        <figure class="face front"><img src="https://placehold.co/400x250?text=Votify"><figcaption>Votify</figcaption></figure>
-        <figure class="face back"><p>Realtime · Firebase</p></figure>
-      </div></div>
+      <div class="proj-card">
+        <div class="card-inner">
+          <figure class="face front">
+            <img src="img/pickforme.png" alt="">
+            <figcaption>Pick for me</figcaption>
+          </figure>
+          <figure class="face back"><p>Buttons · Expo · GPT</p></figure>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="card-inner">
+          <figure class="face front">
+            <img src="https://placehold.co/400x250?text=BeatFrame" alt="">
+            <figcaption>BeatFrame</figcaption>
+          </figure>
+          <figure class="face back"><p>Unity · Rhythm · Sprint</p></figure>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="card-inner">
+          <figure class="face front">
+            <img src="https://placehold.co/400x250?text=Votify" alt="">
+            <figcaption>Votify</figcaption>
+          </figure>
+          <figure class="face back"><p>Realtime · Firebase</p></figure>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ROADMAP / CONTACT / LIGHTBOX -->
+  <!-- ROADMAP -->
   <section id="roadmap" class="py-20 fade">
     <div class="snap-x snap-mandatory flex gap-10 px-10 overflow-x-auto">
       <div class="road snap-center">2025 Q3<br>Pick for me v2</div>
       <div class="road snap-center">2025 Q4<br>BeatFrame Demo</div>
       <div class="road snap-center">2026 H1<br>Unity PM</div>
-      <div class="road snap-center">2026 H2<br>AI&nbsp;Co-creation</div>
+      <div class="road snap-center">2026 H2<br>AI Co-creation</div>
     </div>
   </section>
 
+  <!-- ABOUT ME -->
+  <section id="about" class="px-6 py-24 fade">
+    <div class="max-w-3xl mx-auto text-center space-y-6">
+      <h2 class="text-4xl font-extrabold drop-shadow-hud text-blue">ABOUT&nbsp;ME</h2>
+      <p class="text-gray-300">
+        Product-minded <span class="text-blue font-semibold">Developer&nbsp;&amp;&nbsp;PM</span><br>
+        bridging design, code &amp; people.<br>
+        Exploring AI-assisted creation 🌌
+      </p>
+      <div class="flex flex-wrap justify-center gap-3 text-sm">
+        <span class="tag">JavaScript&nbsp;ES6+</span>
+        <span class="tag">React / RN</span>
+        <span class="tag">Unity&nbsp;C#</span>
+        <span class="tag">Figma&nbsp;·&nbsp;UX</span>
+        <span class="tag">Agile&nbsp;PM</span>
+      </div>
+      <a href="docs/resume.pdf" download class="btn">Download&nbsp;CV&nbsp;↧</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
   <section id="contact" class="px-6 py-24 fade">
     <form id="contactForm" class="max-w-md mx-auto grid gap-4">
       <input name="name"  placeholder="Name"  class="input">
@@ -107,7 +150,9 @@
     </form>
   </section>
 
-  <div id="lightbox"><span id="lbClose">✕</span><img id="lbImg"></div>
+  <!-- 라이트박스 -->
+  <div id="lightbox"><span id="lbClose">✕</span><img id="lbImg" alt=""></div>
+
   <script src="js/main.js"></script>
 </body>
 </html>
