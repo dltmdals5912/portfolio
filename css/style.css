@@ -17,11 +17,12 @@ header{padding-top:5rem}           /* 고정 네비 높이만큼 여백 */
 }
 @keyframes scan{to{background-position-y:5px}}
 
-/* ─── 우주선 커서 ─── */
+/* ─── (새) 우주선 커서 ─── */
+html,body{cursor:none}            /* 기본 커서 숨김 */
 #cursor{
-  position:fixed;inset:0;width:50px;height:50px;pointer-events:none;
-  z-index:1000;transform:translate(-9999px,-9999px);
-  transition:transform .08s linear;
+  position:fixed;width:50px;height:50px;pointer-events:none;z-index:1000;
+  transform:translate(-9999px,-9999px);transition:transform .08s linear;
+  border:none !important;background:none !important;   /* 파란 원 강제 OFF */
 }
 #cursor .ship{width:100%;height:100%}
 #cursor .flame{
@@ -45,10 +46,8 @@ header{padding-top:5rem}           /* 고정 네비 높이만큼 여백 */
 /* ─── Project 카드 ─── */
 .proj-card{perspective:1200px;width:100%;aspect-ratio:4/3;cursor:pointer}
 .card-inner{
-  position:relative;width:100%;height:100%;
-  border-radius:1rem;overflow:hidden;
-  background:rgba(255,255,255,.06);
-  transition:transform .8s;transform-style:preserve-3d;
+  position:relative;width:100%;height:100%;border-radius:1rem;overflow:hidden;
+  background:rgba(255,255,255,.06);transition:transform .8s;transform-style:preserve-3d;
 }
 .proj-card:hover .card-inner{transform:rotateY(180deg)}
 .face{
@@ -65,13 +64,12 @@ header{padding-top:5rem}           /* 고정 네비 높이만큼 여백 */
 /* ─── Lightbox ─── */
 #lightbox{
   position:fixed;inset:0;background:rgba(0,0,0,.9);
-  display:none;align-items:center;justify-content:center;z-index:1100
+  display:none;align-items:center;justify-content:center;z-index:1100;
 }
 #lightbox.open{display:flex}
 #lightbox img{max-width:90%;max-height:90%;border-radius:.75rem}
 #lbClose{
-  position:absolute;top:1rem;right:1.5rem;font-size:2rem;
-  font-weight:700;cursor:pointer
+  position:absolute;top:1rem;right:1.5rem;font-size:2rem;font-weight:700;cursor:pointer;
 }
 
 /* ─── Roadmap 카드 ─── */
@@ -85,8 +83,8 @@ header{padding-top:5rem}           /* 고정 네비 높이만큼 여백 */
 /* 폼 입력 */
 .input{
   background:rgba(255,255,255,.1);padding:.75rem 1rem;border:none;
-  border-radius:.75rem;color:#fff
+  border-radius:.75rem;color:#fff;
 }
-/* 👇 남아 있는 원형 테두리를 무조건 끈다 */
-#cursor{border:none !important;background:none !important}
 
+/* 스캔라인 애니 */
+@keyframes scan{to{background-position-y:5px}}
