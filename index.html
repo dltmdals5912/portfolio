@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>이승민 Portfolio</title>
+
+  <!-- Tailwind CDN — 레이아웃만 담당 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandNavy  : '#0e1a24',
+            brandBlue  : '#00a5ff',
+            brandYellow: '#ffd400'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- 커스텀 효과 -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-brandNavy text-white font-sans">
+
+  <!-- ─── Navbar ─────────────────────────── -->
+  <nav class="flex justify-between px-6 py-4">
+    <span class="font-bold">TECH&nbsp;CONNECTION</span>
+    <a href="#projects" class="hover:text-brandBlue">Projects</a>
+  </nav>
+
+  <!-- ─── Hero ───────────────────────────── -->
+  <section class="flex flex-col items-center justify-center gap-6 text-center h-[70vh] px-4 fade-in">
+    <h1 class="text-4xl md:text-6xl font-bold">
+      팀의 아이디어를 구조로 바꾸는 TPM
+    </h1>
+    <p class="max-w-xl">
+      실행 가능한 흐름을 설계해
+      <span class="text-brandYellow font-semibold">사람</span>과
+      <span class="text-brandBlue font-semibold">기술</span>을 연결
+    </p>
+    <a href="#projects"
+       class="mt-4 px-6 py-3 rounded-xl bg-brandBlue hover:bg-opacity-80 transition">
+       내 프로젝트 보러가기
+    </a>
+  </section>
+
+  <!-- ─── Projects + 필터 ────────────────── -->
+  <section id="projects" class="py-20 px-6 fade-in">
+    <h2 class="text-3xl font-bold mb-8">대표 프로젝트</h2>
+
+    <!-- 필터 버튼 -->
+    <div id="filterBtns" class="flex gap-3 mb-10">
+      <button data-filter="all"   class="filter-active">All</button>
+      <button data-filter="mobile">Mobile</button>
+      <button data-filter="unity">Unity</button>
+      <button data-filter="web">Web</button>
+    </div>
+
+    <!-- 카드 그리드 -->
+    <div class="grid md:grid-cols-3 gap-8" id="cards">
+      <!-- Pick for me -->
+      <article class="proj-card" data-category="mobile">
+        <img src="img/pickforme.png" alt="Pick for me">
+        <h3>Pick for me</h3>
+        <p>버튼 한 번으로 무작위 추천</p>
+      </article>
+
+      <!-- BeatFrame -->
+      <article class="proj-card" data-category="unity">
+        <img src="https://placehold.co/400x250?text=BeatFrame" alt="BeatFrame">
+        <h3>BeatFrame</h3>
+        <p>Unity 리듬-게임 미니 프로젝트</p>
+      </article>
+
+      <!-- Votify -->
+      <article class="proj-card" data-category="web">
+        <img src="https://placehold.co/400x250?text=Votify" alt="Votify">
+        <h3>Votify</h3>
+        <p>실시간 콘텐츠 투표 MVP</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ─── Lightbox Overlay ───────────────── -->
+  <div id="lightbox" class="hidden">
+    <span id="lbClose">✕</span>
+    <img id="lbImg" src="" alt="">
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

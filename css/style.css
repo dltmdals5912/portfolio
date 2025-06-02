@@ -1,0 +1,36 @@
+/* ── 공통 색상 변수 ───────────────────── */
+:root{
+  --brand-blue:#00a5ff;
+  --brand-yellow:#ffd400;
+}
+
+/* ── 페이드-인 애니메이션 ─────────────── */
+.fade-in{opacity:0;transform:translateY(40px);transition:all .6s ease-out}
+.fade-in.in-view{opacity:1;transform:translateY(0)}
+
+/* ── 필터 버튼 ─────────────────────────── */
+#filterBtns button{
+  padding:.35rem .9rem;border:1px solid var(--brand-blue);
+  border-radius:9999px;font-size:.875rem;transition:.3s
+}
+#filterBtns .filter-active,
+#filterBtns button:hover{background:var(--brand-blue)}
+
+/* ── 프로젝트 카드 ─────────────────────── */
+.proj-card{
+  background:rgba(255,255,255,.05);padding:1.5rem;border-radius:1rem;
+  text-align:center;transition:.3s;cursor:pointer
+}
+.proj-card img{width:100%;height:auto;border-radius:.75rem;margin-bottom:1rem}
+.proj-card:hover{transform:translateY(-6px)}
+
+/* ── Lightbox ──────────────────────────── */
+#lightbox{
+  position:fixed;inset:0;background:rgba(0,0,0,.8);
+  display:flex;align-items:center;justify-content:center;z-index:50
+}
+#lightbox img{max-width:90%;max-height:90%;border-radius:.75rem}
+#lbClose{
+  position:absolute;top:1rem;right:1.2rem;font-size:2rem;
+  color:#fff;cursor:pointer;font-weight:bold
+}
