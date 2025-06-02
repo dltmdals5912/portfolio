@@ -1,0 +1,10 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: Dev server
+    init: pnpm install --frozen-lockfile
+    command: pnpm dev -- --host
+ports:
+  - port: 5173
+    onOpen: open-preview
