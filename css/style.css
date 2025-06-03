@@ -1,13 +1,46 @@
 :root {
   --blue: #00bfff;
+  --teal: #00e5ff;
   --ring-glow: #00d9ff;
 }
 
 /* ─── 기본 UI ─── */
-body { margin: 0; }
-.nav-link { transition: .3s; }
-.nav-link:hover { color: var(--blue); }
-header { padding-top: 5rem; /* 고정 네비 높이만큼 여백 */ }
+* {
+  font-family: 'Noto Sans KR', sans-serif;
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ─── 네비게이션 스타일 ─── */
+nav {
+  backdrop-filter: blur(8px);
+}
+.nav-link {
+  position: relative;
+  font-weight: 500;
+  transition: color .3s;
+  padding: .5rem 0;
+}
+.nav-link:hover {
+  color: var(--blue);
+}
+.nav-link .underline {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--blue);
+  transition: width .3s ease;
+}
+.nav-link:hover .underline {
+  width: 100%;
+}
 
 /* ─── 스캔라인 ─── */
 #scan {
@@ -15,39 +48,41 @@ header { padding-top: 5rem; /* 고정 네비 높이만큼 여백 */ }
   background-size: 100% 5px;
   animation: scan 6s linear infinite;
 }
-@keyframes scan { to { background-position-y: 5px; } }
+@keyframes scan {
+  to { background-position-y: 5px; }
+}
 
-/* ─── 우주선 + 양쪽 네온 부스터 커서 ─── */
+/* ─── 우주선 + 네온 부스터 커서 ─── */
 html, body { cursor: none; }
 
 #cursor {
   position: fixed;
-  width: 50px;   /* 컨테이너 크기: 50x50px */
+  width: 50px;
   height: 50px;
   pointer-events: none;
   z-index: 1000;
   transform: translate(-9999px, -9999px);
 }
 
-#cursor .ship-container {
+.ship-container {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-#cursor .ship {
+.ship {
   width: 100%;
   height: 100%;
   filter: brightness(4) drop-shadow(0 0 6px var(--blue));
 }
 
-/* ─── 불꽃 공통 스타일 ─── */
-#cursor .flame {
+/* 공통 불꽃 스타일 */
+.flame {
   position: absolute;
   width: 14px;
   height: 20px;
-  bottom: -2px;           /* 컨테이너 바닥 바로 아래 (꼬리 위치) */
-  transform-origin: 50% 0; /* 위쪽이 회전 축 */
+  bottom: -2px;
+  transform-origin: 50% 0;
   background: radial-gradient(
     circle at 50% 100%,
     rgba(255,255,255,.9) 0 15%,
@@ -57,61 +92,139 @@ html, body { cursor: none; }
   );
   clip-path: polygon(50% 0, 0 100%, 100% 100%);
   filter: brightness(1.8) blur(1px) drop-shadow(0 0 8px var(--blue));
-  animation: core-flicker 0.15s infinite alternate,
-             glow-flicker 0.3s infinite alternate;
+  animation: core-flicker 0.15s infinite alternate, glow-flicker 0.3s infinite alternate;
 }
+.flame.left  { left: 25%; }
+.flame.right { left: 75%; }
 
-/* 왼쪽 부스터: Ship 너비(50px)의 25% 지점 */
-#cursor .flame.left {
-  left: 25%;
-}
-
-/* 오른쪽 부스터: Ship 너비(50px)의 75% 지점 */
-#cursor .flame.right {
-  left: 75%;
-}
-
-/* 불꽃 내부 크기·투명도 떨림 */
 @keyframes core-flicker {
   0%   { width: 6px;  height: 18px; opacity: 0.7; }
   50%  { width: 8px;  height: 22px; opacity: 1;   }
   100% { width: 7px;  height: 20px; opacity: 0.8; }
 }
-/* 불꽃 외곽 글로우 떨림 */
 @keyframes glow-flicker {
-  0%   { filter: blur(1px)  drop-shadow(0 0 6px var(--blue)); }
-  50%  { filter: blur(2px)  drop-shadow(0 0 8px var(--blue)); }
+  0%   { filter: blur(1px) drop-shadow(0 0 6px var(--blue)); }
+  50%  { filter: blur(2px) drop-shadow(0 0 8px var(--blue)); }
   100% { filter: blur(1.5px) drop-shadow(0 0 7px var(--blue)); }
 }
 
-/* ─── 히어로 글로우 ─── */
-.drop-shadow-hud { text-shadow: 0 0 12px var(--blue); }
+/* ─── 섹션 페이드 인/아웃 공통 ─── */
+.fade {
+  opacity: 0;
+  transform: translateY(30px);
+}
 
-/* ─── About Me 태그 & 버튼 ─── */
+/* ─── HERO 섹션 ─── */
+#hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-planet-wrapper {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+/* 구(행성) 스타일 */
+.planet {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    #555555 0%,
+    #222222 50%,
+    #000000 100%
+  );
+  box-shadow:
+    inset 0 0 50px rgba(0, 229, 255, 0.3),
+    0 0 30px rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 토성의 띠처럼 기울기 준 원형 텍스트 */
+.rotate-ring {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotateX(75deg); /* 기울기 */
+  transform-origin: center;
+  animation: spin 20s linear infinite; /* 천천히 회전 */
+}
+
+@keyframes spin {
+  from { transform: rotateX(75deg) rotateZ(0deg); }
+  to   { transform: rotateX(75deg) rotateZ(360deg); }
+}
+
+/* ─── ABOUT 섹션 ─── */
+#about {
+  position: relative;
+}
+#aboutBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(2px);
+  opacity: .3;
+  z-index: -1;
+}
+
+/* ─── About 태그 스타일 ─── */
 .tag {
   background: rgba(255,255,255,.1);
   padding: .35rem .9rem;
   border-radius: .7rem;
+  transition: transform .3s, background .3s;
 }
-.btn {
-  display: inline-block;
-  background: var(--blue);
-  padding: .75rem 1.5rem;
-  border-radius: .75rem;
-  margin-top: 1rem;
+.tag:hover {
+  transform: scale(1.05);
+  background: rgba(255,255,255,.2);
 }
 
-/* ─── Skill 링 ─── */
+/* ─── SKILLS 섹션 ─── */
+#skills h2 {
+  font-size: 2rem;
+}
+@media(min-width: 768px) {
+  #skills h2 { font-size: 2.5rem; }
+}
 .skill {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: .5rem;
 }
-.skill svg { width: 140px; height: 140px; }
-.skill svg .ring { stroke: var(--ring-glow); filter: url(#glow); }
+.skill svg {
+  width: 140px;
+  height: 140px;
+}
+.skill svg .ring {
+  stroke: var(--ring-glow);
+  filter: url(#glow);
+}
 
-/* ─── Project 카드 ─── */
+/* ─── PROJECTS 섹션 ─── */
+#projects h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+@media(min-width: 768px) {
+  #projects h2 { font-size: 2.5rem; }
+}
 .proj-card {
   perspective: 1200px;
   width: 100%;
@@ -128,7 +241,9 @@ html, body { cursor: none; }
   transition: transform .8s;
   transform-style: preserve-3d;
 }
-.proj-card:hover .card-inner { transform: rotateY(180deg); }
+.proj-card:hover .card-inner {
+  transform: rotateY(180deg);
+}
 .face {
   position: absolute;
   inset: 0;
@@ -136,7 +251,7 @@ html, body { cursor: none; }
   align-items: center;
   justify-content: center;
   backface-visibility: hidden;
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: #cbd5e1;
 }
 .face.front img {
@@ -151,35 +266,31 @@ html, body { cursor: none; }
   right: 0;
   text-align: center;
   background: rgba(0,0,0,.65);
+  padding: .5rem 0;
+  font-weight: 600;
 }
-.face.back { transform: rotateY(180deg); }
+.face.back {
+  transform: rotateY(180deg);
+  padding: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
 
-/* ─── Lightbox ─── */
-#lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.9);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1100;
-}
-#lightbox.open { display: flex; }
-#lightbox img {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: .75rem;
-}
-#lbClose {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
+/* ─── ROADMAP 섹션 ─── */
+#roadmap h2 {
   font-size: 2rem;
-  font-weight: 700;
-  cursor: pointer;
+  margin-bottom: 2rem;
 }
-
-/* ─── Roadmap 카드 ─── */
+@media(min-width: 768px) {
+  #roadmap h2 { font-size: 2.5rem; }
+}
+.snap-x {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.snap-center > * {
+  scroll-snap-align: center;
+}
 .road {
   min-width: 220px;
   padding: 2rem 1.5rem;
@@ -191,11 +302,46 @@ html, body { cursor: none; }
   backdrop-filter: blur(4px);
 }
 
-/* ─── Form 입력 ─── */
-.input {
-  background: rgba(255,255,255,.1);
-  padding: .75rem 1rem;
-  border: none;
+/* ─── FOOTER 섹션 ─── */
+footer {
+  background: rgba(0,0,0,.9);
+}
+footer p {
+  color: #888;
+}
+footer img {
+  width: 24px;
+  height: 24px;
+  transition: filter .3s;
+}
+footer img:hover {
+  filter: brightness(1.2);
+}
+
+/* ─── Lightbox ─── */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+#lightbox.open {
+  display: flex;
+}
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
   border-radius: .75rem;
+}
+#lbClose {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
   color: #fff;
+  cursor: pointer;
 }
