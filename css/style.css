@@ -17,31 +17,39 @@ header { padding-top: 5rem; /* 고정 네비 높이만큼 여백 */ }
 }
 @keyframes scan { to { background-position-y: 5px; } }
 
-/* ─── 우주선 + 네온 부스터 커서 ─── */
+/* ─── 우주선 + 양쪽 네온 부스터 커서 ─── */
 html, body { cursor: none; }
+
 #cursor {
   position: fixed;
-  width: 50px;
+  width: 50px;   /* 컨테이너 크기: 50x50px */
   height: 50px;
   pointer-events: none;
   z-index: 1000;
   transform: translate(-9999px, -9999px);
 }
+
+#cursor .ship-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 #cursor .ship {
   width: 100%;
   height: 100%;
   filter: brightness(4) drop-shadow(0 0 6px var(--blue));
 }
+
+/* ─── 불꽃 공통 스타일 ─── */
 #cursor .flame {
   position: absolute;
-  left: 50%;
-  top: 70%;
   width: 14px;
   height: 20px;
-  transform-origin: 50% 0;
-  transform: translateX(-50%);
-  opacity: .8;
-  background: radial-gradient(circle at 50% 100%,
+  bottom: -2px;           /* 컨테이너 바닥 바로 아래 (꼬리 위치) */
+  transform-origin: 50% 0; /* 위쪽이 회전 축 */
+  background: radial-gradient(
+    circle at 50% 100%,
     rgba(255,255,255,.9) 0 15%,
     rgba(0,223,255,.8) 30%,
     rgba(0,191,255,.4) 55%,
@@ -49,9 +57,21 @@ html, body { cursor: none; }
   );
   clip-path: polygon(50% 0, 0 100%, 100% 100%);
   filter: brightness(1.8) blur(1px) drop-shadow(0 0 8px var(--blue));
-  animation: core-flicker 0.15s infinite alternate, glow-flicker 0.3s infinite alternate;
+  animation: core-flicker 0.15s infinite alternate,
+             glow-flicker 0.3s infinite alternate;
 }
-/* 불꽃 내부 떨림 */
+
+/* 왼쪽 부스터: Ship 너비(50px)의 25% 지점 */
+#cursor .flame.left {
+  left: 25%;
+}
+
+/* 오른쪽 부스터: Ship 너비(50px)의 75% 지점 */
+#cursor .flame.right {
+  left: 75%;
+}
+
+/* 불꽃 내부 크기·투명도 떨림 */
 @keyframes core-flicker {
   0%   { width: 6px;  height: 18px; opacity: 0.7; }
   50%  { width: 8px;  height: 22px; opacity: 1;   }

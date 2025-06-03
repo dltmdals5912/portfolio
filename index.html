@@ -53,10 +53,13 @@
   <canvas id="bg"   class="fixed inset-0 -z-10"></canvas>
   <div    id="scan" class="fixed inset-0 -z-5 pointer-events-none"></div>
 
-  <!-- 우주선 커서 + 파란 네온 부스터 -->
+  <!-- 우주선 커서 + 양쪽 네온 부스터 -->
   <div id="cursor">
-    <img src="img/ship.svg" class="ship" alt="">
-    <div class="flame"></div>
+    <div class="ship-container">
+      <img src="img/ship.svg" class="ship" alt="">
+      <div class="flame left"></div>
+      <div class="flame right"></div>
+    </div>
   </div>
 
   <!-- HERO -->

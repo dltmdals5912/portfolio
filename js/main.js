@@ -20,10 +20,11 @@ document.querySelectorAll('.nav-link').forEach(a => {
   });
 });
 
-/*──── 우주선 커서 + 파란 네온 부스터 ────*/
+/*──── 우주선 커서 + 양쪽 네온 부스터 ────*/
 const cursor = document.getElementById('cursor'),
-      ship   = cursor.querySelector('.ship'),
-      flame  = cursor.querySelector('.flame');
+      wrapper = cursor.querySelector('.ship-container'),
+      ship    = wrapper.querySelector('.ship'),
+      flames  = Array.from(wrapper.querySelectorAll('.flame')); // 좌/우 두 개
 
 let mouseX = innerWidth / 2,
     mouseY = innerHeight / 2,
@@ -37,23 +38,28 @@ addEventListener('pointermove', e => {
 });
 
 function renderCursor() {
-  // 0.08 보간 → 약 0.5초 지연
+  // 약 0.08 보간 → 약 0.5초 지연
   curX += (mouseX - curX) * 0.08;
   curY += (mouseY - curY) * 0.08;
   cursor.style.transform = `translate(${curX - 25}px, ${curY - 25}px)`;
 
-  // 회전 각도 계산
+  // 회전 각도 계산 (90° = 위 방향 기준)
   const dx = mouseX - curX,
         dy = mouseY - curY,
         deg = Math.atan2(dy, dx) * 180 / Math.PI + 90;
-  degPrev += (deg - degPrev) * 0.15; // 부드러운 보간
-  ship.style.transform = `rotate(${degPrev}deg)`;
+  degPrev += (deg - degPrev) * 0.15; // 부드럽게 보간
+  wrapper.style.transform = `rotate(${degPrev}deg)`;
 
   // 속도에 따라 불꽃 길이·투명도 조절
   const speed = Math.hypot(dx, dy);
-  const scale = Math.min(2.2, 0.9 + speed * 0.018); // 0.9~2.2 범위
-  flame.style.transform = `translateX(-50%) rotate(${degPrev}deg) scaleY(${scale})`;
-  flame.style.opacity   = Math.min(1, 0.35 + speed * 0.005);
+  const scale = Math.min(2.2, 0.9 + speed * 0.018);   // 세로 스케일(0.9 ~ 2.2)
+  const opacity = Math.min(1, 0.35 + speed * 0.005);   // 투명도(0.35 ~ 1)
+
+  // 좌·우 불꽃 모두 동일하게 업데이트
+  flames.forEach(flame => {
+    flame.style.transform = `translateX(-50%) scaleY(${scale})`; // 이미 부모 회전
+    flame.style.opacity   = opacity;
+  });
 
   requestAnimationFrame(renderCursor);
 }
