@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Particle-Sphere — CDN ESM</title>
+  <style>
+    html,body{margin:0;height:100%;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    /* 캔버스 영역 확인용 진회색 */
+    canvas{width:420px;height:420px;background:#111;display:block;}
+  </style>
+</head>
+<body>
+  <canvas id="sphereCanvas"></canvas>
+
+  <!-- ✅ Three.js & OrbitControls 를 CDN 경로로 명시 -->
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+
+    /* ── 진단 로그 ─────────────────── */
+    console.log('THREE', THREE.REVISION);               // 160
+    const canvas = document.getElementById('sphereCanvas');
+    console.log('canvas', canvas.clientWidth, canvas.clientHeight);
+
+    /* ── 기본 세팅 ─────────────────── */
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.z = 2.8;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
+    function resize(){
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+    }
+    resize();  window.addEventListener('resize', resize);
+
+    /* ── 파티클 구 (빨강) ───────────── */
+    const CNT = 6000, R = 1.2, pos = new Float32Array(CNT*3);
+    for(let i=0;i<CNT;i++){
+      const u=Math.random(), v=Math.random();
+      const θ=2*Math.PI*u,  φ=Math.acos(2*v - 1);
+      pos.set([ R*Math.sin(φ)*Math.cos(θ),
+                R*Math.sin(φ)*Math.sin(θ),
+                R*Math.cos(φ) ], i*3);
+    }
+    const sphereGeo = new THREE.BufferGeometry();
+    sphereGeo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+    const sphereMat = new THREE.PointsMaterial({
+      size:0.1,
+      color:0xff4444,
+      blending:THREE.AdditiveBlending
+    });
+    const sphere = new THREE.Points(sphereGeo, sphereMat);
+    scene.add(sphere);
+
+    /* ── 기울어진 링 (시안) ─────────── */
+    const RN=2500, rPos=new Float32Array(RN*3);
+    for(let i=0;i<RN;i++){
+      const a=2*Math.PI*i/RN, r=2;
+      rPos.set([ r*Math.cos(a),
+                 (Math.random()-.5)*.05,
+                 r*Math.sin(a) ], i*3);
+    }
+    const ringGeo = new THREE.BufferGeometry();
+    ringGeo.setAttribute('position', new THREE.BufferAttribute(rPos,3));
+    const ringMat = new THREE.PointsMaterial({
+      size:.03,
+      color:0x00e5ff,
+      transparent:true,
+      opacity:.6,
+      depthWrite:false
+    });
+    const ring = new THREE.Points(ringGeo, ringMat);
+    ring.rotation.x = Math.PI / 3;
+    scene.add(ring);
+
+    /* ── 컨트롤 & 렌더 루프 ─────────── */
+    const ctrl = new OrbitControls(camera, renderer.domElement);
+    ctrl.enablePan = false; ctrl.enableZoom = false;
+    ctrl.autoRotate = true;  ctrl.autoRotateSpeed = 0.6;
+
+    function animate(){
+      requestAnimationFrame(animate);
+      sphere.rotation.y += .003;
+      ring.rotation.y   += .002;
+      ctrl.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>
