@@ -2,42 +2,60 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Portfolio – Particle Sphere</title>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- GSAP + 플러그인 -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollToPlugin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/TextPlugin.min.js"></script>
-
-  <!-- 핵심 스타일 -->
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이승민 | Tech & AI 포트폴리오</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-black text-white font-sans overflow-x-hidden">
+<body>
+  <header>
+    <h1>이승민</h1>
+    <nav>
+      <a href="#about">소개</a>
+      <a href="#projects">프로젝트</a>
+      <a href="#contact">연락</a>
+    </nav>
+  </header>
 
-  <!-- ── Boot Sequence ── -->
-  <div id="boot" class="fixed inset-0 bg-black flex items-center justify-center z-[9999]">
-    <p id="bootTxt" class="text-green-400 text-xl font-mono"></p>
-  </div>
+  <section id="hero">
+    <h2>AI와 테크를 사랑하는 창작자</h2>
+    <p>프론트엔드 개발과 인공지능 이미지 생성에 몰입하는 이승민입니다.</p>
+  </section>
 
-  <!-- ── 네비게이션, 배경, 커서 등 기존 섹션은 그대로 ── -->
-  <!-- ( 중간 부분 생략 없이 모두 기존 index.html 내용 유지 ) -->
+  <section id="about">
+    <h2>👨‍💻 소개</h2>
+    <p>
+      안녕하세요, 저는 테크와 인공지능을 활용한 이미지 기반 프로젝트에
+      관심이 많은 크리에이터 이승민입니다.<br />
+      React, JavaScript, Stable Diffusion, 그리고 AI API를 다루며
+      사람들에게 영감을 줄 수 있는 콘텐츠를 제작하고 있습니다.
+    </p>
+  </section>
 
-  <!-- ── HERO : 파티클 스피어 ── -->
-  <section id="hero" class="flex items-center justify-center h-[100vh]">
-    <div class="hero-planet-wrapper">
-      <canvas id="sphereCanvas"></canvas>
+  <section id="projects">
+    <h2>🧠 프로젝트</h2>
+    <div class="project">
+      <h3>AI 이미지 큐레이션 갤러리</h3>
+      <p>Stable Diffusion과 웹 기술을 활용한 나만의 AI 이미지 갤러리 웹앱</p>
+    </div>
+    <div class="project">
+      <h3>PickForMe</h3>
+      <p>선택을 도와주는 React Native 기반 모바일 앱 (Supabase 기반 인증)</p>
+    </div>
+    <div class="project">
+      <h3>AI 기반 뉴스 큐레이션 서비스</h3>
+      <p>사용자 맞춤형 뉴스 추천 플랫폼 - Python + GPT API 활용</p>
     </div>
   </section>
 
-  <!-- ABOUT, SKILLS, PROJECTS, ROADMAP, FOOTER … 기존 섹션 그대로 -->
+  <section id="contact">
+    <h2>📬 연락하기</h2>
+    <p>이메일: <a href="mailto:seungmin@aiportfolio.com">seungmin@aiportfolio.com</a></p>
+  </section>
 
-  <!-- ── Lightbox ── -->
-  <div id="
+  <footer>
+    <p>&copy; 2025 이승민</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
